@@ -583,12 +583,7 @@ a:hover {
     filter: brightness(0) invert(1);
 }
 
-.icon-text {
-    font-size: 1.25rem;
-    line-height: 1;
-    font-weight: 800;
-    font-family: var(--font-primary);
-    letter-spacing: 0.5px;
+/* .icon-text styles removed - no longer using text icons */
 }
 
 .leadership-item h3 {
