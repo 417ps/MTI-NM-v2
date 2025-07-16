@@ -47,7 +47,7 @@ Professional website for Granalytich Solutions Ltd., a specialized project contr
 
 ## Deployment
 
-Deployed on Vercel with automatic deployments from this repository.
+Deployed on Vercel with automatic deployments from this repository. Git integration now active for seamless continuous deployment.
 
 ## Contact
 
