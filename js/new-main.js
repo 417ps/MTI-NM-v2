@@ -40,8 +40,8 @@ document.addEventListener('DOMContentLoaded', function() {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
                     const counter = entry.target;
-                    const target = parseInt(counter.textContent) || 0;
-                    animateCounter(counter, 0, target, 2000);
+                    const originalText = counter.textContent.trim();
+                    animateCounter(counter, originalText, 2000);
                     observer.unobserve(counter);
                 }
             });
@@ -52,27 +52,101 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
     
-    function animateCounter(element, start, end, duration) {
+    function animateCounter(element, targetText, duration) {
         const startTime = performance.now();
-        const suffix = element.parentElement.querySelector('.metric-suffix')?.textContent || '';
         
-        function updateCounter(currentTime) {
-            const elapsed = currentTime - startTime;
-            const progress = Math.min(elapsed / duration, 1);
+        // Parse different types of stats
+        const statConfig = parseStatValue(targetText);
+        
+        if (statConfig.animatable) {
+            // For numeric values that can be animated
+            function updateCounter(currentTime) {
+                const elapsed = currentTime - startTime;
+                const progress = Math.min(elapsed / duration, 1);
+                
+                const easeOutQuart = 1 - Math.pow(1 - progress, 4);
+                const current = Math.floor(statConfig.start + (statConfig.end - statConfig.start) * easeOutQuart);
+                
+                element.textContent = statConfig.prefix + current + statConfig.suffix;
+                
+                if (progress < 1) {
+                    requestAnimationFrame(updateCounter);
+                } else {
+                    element.textContent = targetText;
+                }
+            }
             
-            const easeOutQuart = 1 - Math.pow(1 - progress, 4);
-            const current = Math.floor(start + (end - start) * easeOutQuart);
+            // Start with 0 and animate up
+            element.textContent = statConfig.prefix + statConfig.start + statConfig.suffix;
+            requestAnimationFrame(updateCounter);
+        } else {
+            // For non-numeric values (Q, SW, MBA), just do a reveal animation
+            element.style.opacity = '0';
+            element.style.transform = 'scale(0.8)';
             
-            element.textContent = current;
-            
-            if (progress < 1) {
-                requestAnimationFrame(updateCounter);
-            } else {
-                element.textContent = end + suffix;
+            setTimeout(() => {
+                element.style.opacity = '1';
+                element.style.transform = 'scale(1)';
+                element.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+            }, 100);
+        }
+    }
+    
+    function parseStatValue(text) {
+        // Handle $86M+ format
+        if (text.includes('$') && text.includes('M')) {
+            const number = parseInt(text.replace(/[$M+]/g, ''));
+            return {
+                animatable: true,
+                start: 0,
+                end: number,
+                prefix: '$',
+                suffix: 'M+'
+            };
+        }
+        
+        // Handle percentage format (100%, 51%, etc.)
+        if (text.includes('%')) {
+            const number = parseInt(text.replace('%', ''));
+            if (!isNaN(number)) {
+                return {
+                    animatable: true,
+                    start: 0,
+                    end: number,
+                    prefix: '',
+                    suffix: '%'
+                };
             }
         }
         
-        requestAnimationFrame(updateCounter);
+        // Handle 8+ format
+        if (text.includes('+') && !text.includes('$')) {
+            const number = parseInt(text.replace('+', ''));
+            return {
+                animatable: true,
+                start: 0,
+                end: number,
+                prefix: '',
+                suffix: '+'
+            };
+        }
+        
+        // Handle plain numbers like 51, 3, etc.
+        const plainNumber = parseInt(text);
+        if (!isNaN(plainNumber) && plainNumber > 0) {
+            return {
+                animatable: true,
+                start: 0,
+                end: plainNumber,
+                prefix: '',
+                suffix: ''
+            };
+        }
+        
+        // Non-animatable text (Q, SW, MBA, etc.)
+        return {
+            animatable: false
+        };
     }
     
     // Initialize counter animation
