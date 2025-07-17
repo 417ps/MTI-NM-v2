@@ -49,6 +49,17 @@ Professional website for Granalytich Solutions Ltd., a specialized project contr
 
 Deployed on Vercel with automatic deployments from this repository. Git integration now active for seamless continuous deployment.
 
+### Making Project Private
+
+To enable authentication and make the project private:
+
+1. Go to [Vercel Dashboard](https://vercel.com/dashboard)
+2. Navigate to the "granalytich-solutions-website" project
+3. Go to **Settings** → **General** → **Project Protection**
+4. Enable **"Vercel Authentication"** or **"Password Protection"**
+
+This will require authentication for all access to the site.
+
 ## Contact
 
 - **Email**: jjgranich@msn.com

@@ -37,10 +37,12 @@ Developed and deployed a professional website for **Granalytich Solutions Ltd.**
 - **Responsive**: Mobile-optimized with appropriate breakpoints
 
 ### Deployment Stack
-- **Repository**: GitHub (https://github.com/417ps/granalytich-solutions-website)
-- **Hosting**: Vercel with automatic deployments
-- **Domain**: https://granalytic-solutions-website.vercel.app (public access)
-- **Latest Deployment**: https://granalytich-solutions-website-qch6zb2xb.vercel.app
+- **Repository**: GitHub (https://github.com/417ps/granalytich-solutions-website) 
+- **Hosting**: Vercel with Git integration for continuous deployment
+- **Domain**: https://granalytic-solutions-website.vercel.app
+- **Latest Deployment**: https://granalytich-solutions-website-2y5uoc2g6.vercel.app
+- **Project Name**: granalytich-solutions-website (corrected from granalytic)
+- **Access Control**: Can be configured for authentication via Vercel Dashboard
 - **Files**: index.html, README.md, vercel.json, .gitignore
 
 ## Key Features Implemented
