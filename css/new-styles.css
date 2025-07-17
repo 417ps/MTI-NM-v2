@@ -947,11 +947,11 @@ a:hover {
 }
 
 .leader-image img {
-    width: 120px;
-    height: 120px;
+    width: 150px;
+    height: 150px;
     border-radius: var(--radius-lg);
     object-fit: cover;
-    object-position: center top;
+    object-position: center 20%;
 }
 
 .leader-credentials {
